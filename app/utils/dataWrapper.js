@@ -13,7 +13,8 @@ var db = new DB('dreamlinerDb', server);
 function addUser(userName, password, firstName, lastName, callback) {
   db.open(function(err, db) {
     if (err) {
-      console.log(err);
+      db.close();
+      return callback(err, null);
     } else {
       db.collection('users', function (err, collectionref) {
         var newUser = {
@@ -22,12 +23,24 @@ function addUser(userName, password, firstName, lastName, callback) {
           lastName: lastName,
           password: password
         };
-        collectionref.insert(newUser, function (err, result) {
+        collectionref.count({userName:userName}, function (err, amount) {
           if (err) {
-            console.log(err);
-          } else {
             db.close();
-            return callback(null, 'happy days are here again');
+            return callback(err, null);
+          } else {
+            if (amount > 0) {
+              db.close();
+              return callback('user already exists', null);
+            } else {
+              collectionref.insert(newUser, function (err, result) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  db.close();
+                  return callback(null, 'user added');
+                }
+              });
+            }
           }
         });
       });
