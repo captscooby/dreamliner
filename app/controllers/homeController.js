@@ -47,7 +47,7 @@ function stockPost(req, res) {
     if(err) {
       res.render('stock', { error:err });
     } else {
-      console.log(data.results);
+      console.log(data.body);
       res.render('stock', { queryvalue:req.body.stockId, data:data.body });
     }
   });
