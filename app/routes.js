@@ -10,6 +10,8 @@ function addRoutes(app) {
   app.get('/adduser', controllers.homeController.addUserGet);
   app.post('/adduser', controllers.homeController.addUserPost)
   app.get('/viewusers', controllers.homeController.viewUsers);
+  app.get('/stock', controllers.homeController.stockGet);
+  app.post('/stock', controllers.homeController.stockPost);
 };
 
 exports.addRoutes = addRoutes;

@@ -1,7 +1,8 @@
 /**
  * Created by jonathan.taylor on 10/4/2014.
  */
-var dataWrapper = require('../../dataWrapper');
+var dataWrapper = require('../utils/dataWrapper');
+var stockWrapper = require('../utils/stockWrapper');
 
 function home(req, res) {
   res.render('home', { data:'home' });
@@ -19,19 +20,42 @@ function addUserPost(req, res) {
   dataWrapper.addUser(userName, password, firstName, lastName, function(err, data) {
     if(err) {
       console.log(err);
-      res.render('adduser', { data:err });
+      res.render('adduser', { error:err });
     } else {
       res.render('home', { data:data });
     }
   });
-
 }
 
 function viewUsers(req, res) {
-  res.render('viewUsers', { data: 'something' });
+  dataWrapper.viewUsers(function(err, data) {
+    if(err) {
+      console.log(err);
+      res.render('viewusers', { error:err });
+    } else {
+      res.render('viewusers', { data:data });
+    }
+  });
+}
+
+function stockGet(req, res) {
+  res.render('stock');
+}
+
+function stockPost(req, res) {
+  stockWrapper.findStock(req.body.stockId, function stockPostCallback(err, data) {
+    if(err) {
+      res.render('stock', { error:err });
+    } else {
+      console.log(data.body);
+      res.render('stock', { data:data.body });
+    }
+  });
 }
 
 exports.home = home;
 exports.addUserGet = addUserGet;
 exports.addUserPost = addUserPost;
 exports.viewUsers = viewUsers;
+exports.stockGet = stockGet;
+exports.stockPost = stockPost;

@@ -1,0 +1,15 @@
+you are on the stock page
+{{error}}
+<form id="findStockForm" action="./stock" method="post">
+    <div>
+        <label for="stockId">Stock ID:</label>
+        <div>
+            <input id="stockId" type="text" value="" placeholder="stock identifier" name="stockId" />
+        </div>
+    </div>
+    <div>
+        <button type="submit" value="Find Stock" class="btn btn-default">Find Stock</button>
+    </div>
+</form>
+
+<div>{{data}}</div>
