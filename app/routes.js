@@ -7,6 +7,9 @@ var controllers = requireDir('../app/controllers');
 
 function addRoutes(app) {
   app.get('/', controllers.homeController.home);
+  app.get('/adduser', controllers.homeController.addUserGet);
+  app.post('/adduser', controllers.homeController.addUserPost)
+  app.get('/viewusers', controllers.homeController.viewUsers);
 };
 
 exports.addRoutes = addRoutes;
