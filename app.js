@@ -21,7 +21,7 @@ app.use(express.urlencoded());
 
 hbs.registerPartials(__dirname + '/app/views/partials');
 
-require('./app/routes').addRoutes(app);
+require('./app/utils/routes').addRoutes(app);
 
 var server = require('http').createServer(app);
 

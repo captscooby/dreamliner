@@ -34,7 +34,8 @@ function addUser(userName, password, firstName, lastName, callback) {
             } else {
               collectionref.insert(newUser, function (err, result) {
                 if (err) {
-                  console.log(err);
+                  db.close();
+                  return callback(err, null);
                 } else {
                   db.close();
                   return callback(null, 'user added');
@@ -51,14 +52,75 @@ function addUser(userName, password, firstName, lastName, callback) {
 function viewUsers(callback) {
   db.open(function(err, db) {
     if (err) {
-      console.log(err);
+      db.close();
+      return callback(err, null);
     } else {
       db.collection('users', function (err, collectionref) {
         var cursor = collectionref.find();
         cursor.toArray(function(err, docs) {
           if (err) {
-            console.log(err);
+            db.close();
+            return callback(err, null);
           } else {
+            db.close();
+            return callback(null, docs);
+          }
+        });
+      });
+    }
+  });
+}
+
+function addClub(clubName, callback) {
+  db.open(function(err, db) {
+    if (err) {
+      db.close();
+      return callback(err, null);
+    } else {
+      db.collection('clubs', function (err, collectionref) {
+        var newClub = {
+          clubName: clubName
+        };
+        collectionref.count({clubName: clubName}, function (err, amount) {
+          if (err) {
+            db.close();
+            return callback(err, null);
+          } else {
+            if (amount > 0) {
+              db.close();
+              return callback('club already exists', null);
+            } else {
+              collectionref.insert(newClub, function (err, result) {
+                if (err) {
+                  db.close();
+                  return callback(err, null);
+                } else {
+                  db.close();
+                  return callback(null, 'club added');
+                }
+              });
+            }
+          }
+        });
+      });
+    }
+  });
+}
+
+function viewClubs(callback) {
+  db.open(function(err, db) {
+    if (err) {
+      db.close();
+      return callback(err, null);
+    } else {
+      db.collection('clubs', function (err, collectionref) {
+        var cursor = collectionref.find();
+        cursor.toArray(function(err, docs) {
+          if (err) {
+            db.close();
+            return callback(err, null);
+          } else {
+            console.log(docs);
             db.close();
             return callback(null, docs);
           }
@@ -70,3 +132,5 @@ function viewUsers(callback) {
 
 exports.addUser = addUser;
 exports.viewUsers = viewUsers;
+exports.addClub = addClub;
+exports.viewClubs = viewClubs;

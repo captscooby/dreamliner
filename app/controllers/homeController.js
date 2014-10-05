@@ -9,7 +9,7 @@ function home(req, res) {
 }
 
 function addUserGet(req, res) {
-  res.render('adduser', { data:'adduser' });
+  res.render('adduser');
 }
 
 function addUserPost(req, res) {
@@ -19,7 +19,6 @@ function addUserPost(req, res) {
   var lastName = req.body.lastName;
   dataWrapper.addUser(userName, password, firstName, lastName, function(err, data) {
     if(err) {
-      console.log(err);
       res.render('adduser', { error:err });
     } else {
       res.render('home', { data:data });
@@ -30,10 +29,34 @@ function addUserPost(req, res) {
 function viewUsers(req, res) {
   dataWrapper.viewUsers(function(err, data) {
     if(err) {
-      console.log(err);
       res.render('viewusers', { error:err });
     } else {
       res.render('viewusers', { data:data });
+    }
+  });
+}
+
+function addClubGet(req, res) {
+  res.render('addclub');
+}
+
+function addClubPost(req, res) {
+  var clubName = req.body.clubName;
+  dataWrapper.addClub(clubName, function(err, data) {
+    if(err) {
+      res.render('addClub', { error:err });
+    } else {
+      res.render('home', { data:data });
+    }
+  });
+}
+
+function viewClubs(req, res) {
+  dataWrapper.viewClubs(function(err, data) {
+    if(err) {
+      res.render('viewclubs', { error:err });
+    } else {
+      res.render('viewclubs', { data:data });
     }
   });
 }
@@ -57,5 +80,8 @@ exports.home = home;
 exports.addUserGet = addUserGet;
 exports.addUserPost = addUserPost;
 exports.viewUsers = viewUsers;
+exports.addClubGet = addClubGet;
+exports.addClubPost = addClubPost;
+exports.viewClubs = viewClubs;
 exports.stockGet = stockGet;
 exports.stockPost = stockPost;
