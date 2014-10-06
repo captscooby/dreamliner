@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.json());
 app.use(express.urlencoded());
 //app.use(express.methodOverride());
-app.use(app.router);
+//app.use(app.router);
 
 hbs.registerPartials(__dirname + '/app/views/partials');
 

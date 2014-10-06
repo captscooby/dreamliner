@@ -17,6 +17,8 @@ function addRoutes(app) {
   app.get('/viewclubs', controllers.homeController.viewClubs);
   app.get('/stock', controllers.homeController.stockGet);
   app.post('/stock', controllers.homeController.stockPost);
+  app.get('/addusertoclub/:clubid/:userid', controllers.homeController.addUserToClub);
+  app.post('/addstocktoclub', controllers.homeController.addStockToClub);
 };
 
 exports.addRoutes = addRoutes;

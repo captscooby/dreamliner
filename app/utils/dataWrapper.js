@@ -29,46 +29,6 @@ function addUser(userName, password, firstName, lastName, callback) {
   });
 }
 
-/*
-function addUser(userName, password, firstName, lastName, callback) {
-  db.open(function(err, db) {
-    if (err) {
-      db.close();
-      return callback(err, null);
-    } else {
-      db.collection('users', function (err, collectionref) {
-        var newUser = {
-          userName: userName,
-          firstName: firstName,
-          lastName: lastName,
-          password: password
-        };
-        collectionref.count({userName:userName}, function (err, amount) {
-          if (err) {
-            db.close();
-            return callback(err, null);
-          } else {
-            if (amount > 0) {
-              db.close();
-              return callback('user already exists', null);
-            } else {
-              collectionref.insert(newUser, function (err, result) {
-                if (err) {
-                  db.close();
-                  return callback(err, null);
-                } else {
-                  db.close();
-                  return callback(null, 'user added');
-                }
-              });
-            }
-          }
-        });
-      });
-    }
-  });
-}
-*/
 function findUser(userName, callback) {
   db.open(function(err, db) {
     if (err) {
@@ -128,44 +88,6 @@ function addClub(clubName, callback) {
   });
 }
 
-/*
-function addClub(clubName, callback) {
-  db.open(function(err, db) {
-    if (err) {
-      db.close();
-      return callback(err, null);
-    } else {
-      db.collection('clubs', function (err, collectionref) {
-        var newClub = {
-          clubName: clubName
-        };
-        collectionref.count({clubName: clubName}, function (err, amount) {
-          if (err) {
-            db.close();
-            return callback(err, null);
-          } else {
-            if (amount > 0) {
-              db.close();
-              return callback('club already exists', null);
-            } else {
-              collectionref.insert(newClub, function (err, result) {
-                if (err) {
-                  db.close();
-                  return callback(err, null);
-                } else {
-                  db.close();
-                  return callback(null, 'club added');
-                }
-              });
-            }
-          }
-        });
-      });
-    }
-  });
-}
-*/
-
 function findClub(clubName, callback) {
   db.open(function(err, db) {
     if (err) {
@@ -200,7 +122,87 @@ function findClubs(callback) {
             db.close();
             return callback(err, null);
           } else {
-            console.log(docs);
+            db.close();
+            return callback(null, docs);
+          }
+        });
+      });
+    }
+  });
+}
+
+function addUserToClub(clubName, userName, callback) {
+  var matchCriteria = {
+    clubName: clubName,
+    userName: userName
+  };
+  var newUserInClub = {
+    clubName: clubName,
+    userName: userName
+  };
+  addIfDoesNotExist('clubUserMap', matchCriteria, newUserInClub, function(err, data) {
+    if (err) {
+      return callback(err, null);
+    } else {
+      return callback(null, data);
+    }
+  });
+}
+
+function findUsersInClub(clubName, callback) {
+  db.open(function(err, db) {
+    if (err) {
+      db.close();
+      return callback(err, null);
+    } else {
+      db.collection('clubUserMap', function (err, collectionref) {
+        var cursor = collectionref.find({clubName: clubName});
+        cursor.toArray(function(err, docs) {
+          if (err) {
+            db.close();
+            return callback(err, null);
+          } else {
+            db.close();
+            return callback(null, docs);
+          }
+        });
+      });
+    }
+  });
+}
+
+function addStockToClub(clubName, stockSymbol, stockShares, callback) {
+  var matchCriteria = {
+    clubName: clubName,
+    stockSymbol: stockSymbol
+  };
+  var newStockInClub = {
+    clubName: clubName,
+    stockSymbol: stockSymbol,
+    stockShares: stockShares
+  };
+  addIfDoesNotExist('clubStockMap', matchCriteria, newStockInClub, function(err, data) {
+    if (err) {
+      return callback(err, null);
+    } else {
+      return callback(null, data);
+    }
+  });
+}
+
+function findClubStocks(clubName, callback) {
+  db.open(function(err, db) {
+    if (err) {
+      db.close();
+      return callback(err, null);
+    } else {
+      db.collection('clubStockMap', function (err, collectionref) {
+        var cursor = collectionref.find({clubName: clubName});
+        cursor.toArray(function(err, docs) {
+          if (err) {
+            db.close();
+            return callback(err, null);
+          } else {
             db.close();
             return callback(null, docs);
           }
@@ -249,3 +251,7 @@ exports.findUsers = findUsers;
 exports.addClub = addClub;
 exports.findClub = findClub;
 exports.findClubs = findClubs;
+exports.addUserToClub = addUserToClub;
+exports.findUsersInClub = findUsersInClub;
+exports.addStockToClub = addStockToClub;
+exports.findClubStocks = findClubStocks;

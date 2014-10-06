@@ -1,3 +1,38 @@
 view single club
 {{error}}
-<div>{{data.clubName}}</div>
+<div>Club Name: {{data.club.clubName}}</div>
+<br />
+<div>Club Stocks:</div>
+{{#each data.stocks}}
+    <div>Name: {{stockSymbol}} Shares: {{stockShares}} Raw Data: {{rawData}}</div>
+{{/each}}
+<br />
+<div>Club Memebers:</div>
+{{#each data.usersin}}
+    <div>{{userName}} is a club member</div>
+{{/each}}
+<br />
+<div>Add Stock To Club:</div>
+  <form id="addStockForm" action="/addstocktoclub" method="post">
+    <input id="clubid" type="hidden" value="{{data.club.clubName}}" name="clubid" />
+    <div>
+        <label for="symbol">Stock Symbol:</label>
+        <div>
+            <input id="symbol" type="text" value="" placeholder="Stock Symbol" name="symbol" />
+        </div>
+    </div>
+    <div>
+        <label for="shares">Shares Owned:</label>
+        <div>
+            <input id="shares" type="text" value="" placeholder="Shares Owned" name="shares" />
+        </div>
+    </div>
+    <div>
+        <button type="submit" value="Add Stock" class="btn btn-default">Add Stock</button>
+    </div>
+</form>
+<br />
+<div>All Users:</div>
+{{#each data.usersout}}
+    <div><a href="/addusertoclub/{{../data.club.clubName}}/{{userName}}">add {{userName}} to this club</a></div>
+{{/each}}
