@@ -26,8 +26,18 @@ function addUserPost(req, res) {
   });
 }
 
+function viewUser(req, res) {
+  dataWrapper.findUser(req.params.id, function(err, data) {
+    if(err) {
+      res.render('viewuser', { error:err });
+    } else {
+      res.render('viewuser', { data:data });
+    }
+  });
+}
+
 function viewUsers(req, res) {
-  dataWrapper.viewUsers(function(err, data) {
+  dataWrapper.findUsers(function(err, data) {
     if(err) {
       res.render('viewusers', { error:err });
     } else {
@@ -51,8 +61,18 @@ function addClubPost(req, res) {
   });
 }
 
+function viewClub(req, res) {
+  dataWrapper.findClub(req.params.id, function(err, data) {
+    if(err) {
+      res.render('viewclub', { error:err });
+    } else {
+      res.render('viewclub', { data:data });
+    }
+  });
+}
+
 function viewClubs(req, res) {
-  dataWrapper.viewClubs(function(err, data) {
+  dataWrapper.findClubs(function(err, data) {
     if(err) {
       res.render('viewclubs', { error:err });
     } else {
@@ -79,9 +99,11 @@ function stockPost(req, res) {
 exports.home = home;
 exports.addUserGet = addUserGet;
 exports.addUserPost = addUserPost;
+exports.viewUser = viewUser;
 exports.viewUsers = viewUsers;
 exports.addClubGet = addClubGet;
 exports.addClubPost = addClubPost;
+exports.viewClub = viewClub;
 exports.viewClubs = viewClubs;
 exports.stockGet = stockGet;
 exports.stockPost = stockPost;

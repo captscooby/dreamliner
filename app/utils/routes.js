@@ -8,10 +8,12 @@ var controllers = requireDir('../../app/controllers');
 function addRoutes(app) {
   app.get('/', controllers.homeController.home);
   app.get('/adduser', controllers.homeController.addUserGet);
-  app.post('/adduser', controllers.homeController.addUserPost)
+  app.post('/adduser', controllers.homeController.addUserPost);
+  app.get('/viewuser/:id', controllers.homeController.viewUser);
   app.get('/viewusers', controllers.homeController.viewUsers);
   app.get('/addclub', controllers.homeController.addClubGet);
   app.post('/addclub', controllers.homeController.addClubPost);
+  app.get('/viewclub/:id', controllers.homeController.viewClub);
   app.get('/viewclubs', controllers.homeController.viewClubs);
   app.get('/stock', controllers.homeController.stockGet);
   app.post('/stock', controllers.homeController.stockPost);
