@@ -84,22 +84,20 @@ function viewClub(req, res) {
                 if(err) {
                   res.render('viewclub', { error:err });
                 } else {
-                  q.fcall(function() {
+                    //the forEach happens asyn so returnData is sent before the data is populated
                     stocksData.forEach(function (stock) {
-                      stockWrapper.findStock(stock.stockSymbol, function (err, yahooStockData) {
+                      stockWrapper.findStock(stock.stockSymbol, function (err, apiStockData) {
                         if (err) {
                           res.render('viewclub', { error: err });
                         } else {
-                          stock.rawData = yahooStockData.body;
-                          console.log(stock);
+                          stock.rawData = apiStockData.body;
+                          console.log(stocksData);
                         }
                       });
                     });
-                  }).then(function() {
                     returnData.stocks = stocksData;
-                    //console.log(returnData);
+                    console.log(returnData);
                     res.render('viewclub', { data:returnData });
-                  });
                 }
               });
             }

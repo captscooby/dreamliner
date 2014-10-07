@@ -171,6 +171,29 @@ function findUsersInClub(clubName, callback) {
   });
 }
 
+//not working
+function findUsersNotInClub(clubName, callback) {
+  db.open(function(err, db) {
+    if (err) {
+      db.close();
+      return callback(err, null);
+    } else {
+      db.collection('clubUserMap', function (err, collectionref) {
+        var cursor = collectionref.find({clubName: { $ne: clubName }});
+        cursor.toArray(function(err, docs) {
+          if (err) {
+            db.close();
+            return callback(err, null);
+          } else {
+            db.close();
+            return callback(null, docs);
+          }
+        });
+      });
+    }
+  });
+}
+
 function addStockToClub(clubName, stockSymbol, stockShares, callback) {
   var matchCriteria = {
     clubName: clubName,
@@ -253,5 +276,6 @@ exports.findClub = findClub;
 exports.findClubs = findClubs;
 exports.addUserToClub = addUserToClub;
 exports.findUsersInClub = findUsersInClub;
+exports.findUsersNotInClub = findUsersNotInClub;
 exports.addStockToClub = addStockToClub;
 exports.findClubStocks = findClubStocks;
